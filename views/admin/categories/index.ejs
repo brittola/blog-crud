@@ -1,0 +1,78 @@
+<%- include('../../partials/header.ejs'); %>
+<%- include('../../partials/navbar.ejs'); %>
+
+<div class="container">
+    <hr>
+    <div class="d-flex justify-content-between align-center">
+        <h2>Categorias</h2>
+        <a class="btn btn-success" href="/admin/categories/new">
+            Criar nova categoria
+        </a>
+    </div>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Slug
+                </th>
+                <th>
+                    Ações
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% categories.forEach(cat => { %>
+            <tr>
+                <td>
+                    <%= cat.id %>
+                </td>
+                <td>
+                    <%= cat.title %>
+                </td>
+                <td>
+                    <%= cat.slug %>
+                </td>
+                <td class="d-flex justify-content-center">
+                    <a href="/admin/categories/edit/<%= cat.id %>" class="btn btn-warning mr-1">
+                        Editar
+                    </a>
+                    <form method="post" action="/categories/delete">
+                        <input type="hidden" name="id" value="<%= cat.id %>">
+                        <button class="btn btn-danger">
+                            Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('../../partials/footer.ejs'); %>
+
+<script>
+    // Prevenindo exclusões por acidente
+    const forms = document.querySelectorAll('form');
+
+    for (i = 0; i < forms.length; i++) {
+        forms[i].addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const catName = this.parentElement.parentElement.children[1].textContent.trim();
+
+            const confirmation = confirm(`Tem certeza que deseja excluir a categoria "${catName}"?`);
+            
+            if (confirmation) {
+                this.submit();
+            }
+        });
+    }
+</script>

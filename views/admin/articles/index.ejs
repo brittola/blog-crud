@@ -1,0 +1,83 @@
+<%- include('../../partials/header.ejs'); %>
+<%- include('../../partials/navbar.ejs'); %>
+<div class="container">
+    <hr>
+    <div class="d-flex justify-content-between align-center">
+        <h2>Artigos</h2>
+        <a class="btn btn-success" href="/admin/articles/new">
+            Criar novo artigo
+        </a>
+    </div>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Slug
+                </th>
+                <th>
+                    Categoria
+                </th>
+                <th>
+                    Ações
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% articles.forEach(article => { %>
+            <tr>
+                <td>
+                    <%= article.id %>
+                </td>
+                <td>
+                    <%= article.title %>
+                </td>
+                <td>
+                    <%= article.slug %>
+                </td>
+                <td>
+                    <%= article.category.title %>
+                </td>
+                <td class="d-flex justify-content-center">
+                    <a href="/admin/articles/edit/<%= article.id %>" class="btn btn-warning mr-1">
+                        Editar
+                    </a>
+                    <form method="post" action="/articles/delete">
+                        <input type="hidden" name="id" value="<%= article.id %>">
+                        <button class="btn btn-danger">
+                            Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('../../partials/footer.ejs'); %>
+
+<script>
+    // Prevenindo exclusões por acidente
+    const forms = document.querySelectorAll('form');
+
+    for (i = 0; i < forms.length; i++) {
+        forms[i].addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const articleName = this.parentElement.parentElement.children[1].textContent.trim();
+
+            const confirmation = confirm(`Tem certeza que deseja excluir o artigo "${articleName}"?`);
+            
+            if (confirmation) {
+                this.submit();
+            }
+        });
+    }
+</script>

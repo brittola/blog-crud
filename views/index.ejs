@@ -1,0 +1,37 @@
+<%- include('./partials/header.ejs'); %>
+<%- include('./partials/homenavbar.ejs'); %>
+
+    <div class="container">
+        <hr>
+        <div class="jumbotron">
+            <h1 class="display-4">Olá, Mundo!</h1>
+            <p class="lead">Seja bem vindo ao meu blog pessoal. Este é um projeto com CRUD completo<br>e sistema de login para criar categorias e artigos.</p>
+            <hr class="my-4">
+            <p>Tecnologias utilizadas: <strong>Express, MySQL e EJS</strong></p>
+        </div>
+        <hr>
+        <% articles.forEach(article=> { %>
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h2>
+                        <%= article.title %>
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p>Categoria: <strong>
+                            <%= article.category.title %>
+                        </strong></p>
+                    <a class="btn btn-success" href="/<%= article.slug %>">
+                        Ler artigo
+                    </a>
+                </div>
+            </div>
+            <% }); %>
+        <div class="card mb-4">
+            <div class="card-header">
+                <a style="float: right;" href="articles/page/2">Next &gt;&gt;</a>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/footer.ejs'); %>

@@ -1,0 +1,62 @@
+<%- include('../../partials/header.ejs'); %>
+<%- include('../../partials/navbar.ejs'); %>
+
+<div class="container">
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h2>Editar Artigo</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/articles/update">
+                <input type="hidden" name="id" value="<%= article.id %>">
+                <input class="form-control" type="text" name="title" placeholder="Defina o título do artigo" value="<%= article.title %>">
+                <br>
+                <textarea class="form-control" placeholder="Digite o artigo aqui" name="body" id="article" data-content="<%= article.body %>"></textarea>
+                <br>
+                <label>Categoria</label>
+                <select name="categoryId" class="form-control">
+                    <% categories.forEach((cat) => { %>
+                        <option <% if(cat.id == article.categoryId) { %> selected <% } %> value="<%= cat.id %>"><%= cat.title %></option>
+                    <% }); %>
+                </select>
+                <br>
+                <button class="btn btn-success">Publicar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    const articleContent = document.getElementById('article').dataset.content;
+    tinymce.init({
+        selector: '#article',
+        plugins: [ 
+            'advlist',
+            'autolink',
+            'link',
+            'image',
+            'lists',
+            'print',
+            'preview',
+            'hr',
+            'searchreplace',
+            'wordcount',
+            'fullscreen',
+            'insertdatetime',
+            'media',
+            'save',
+            'table',
+            'paste',
+            'emoticons'
+        ],
+        setup: function (editor) {
+                    editor.on('init', function () {
+                        this.setContent(articleContent);
+                    });
+        }
+    });
+</script>
+
+<%- include('../../partials/footer.ejs'); %>
